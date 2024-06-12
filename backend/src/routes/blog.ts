@@ -5,15 +5,14 @@ import { verify } from "hono/jwt";
 
 export const blogRouter = new Hono<{
     Bindings: {
-        DATABASE_URL: string;
-        JWT_SECRET: string;
+        DATABASE_URL: string,
+        JWT_SECRET: string,
     },
     Variables: {
-        userId: string;
+        userId: string
     }
 }>();
 
-// middleware
 blogRouter.use("/*", async (c, next) => {
 
   const authHeader = c.req.header("authorization") || "";
