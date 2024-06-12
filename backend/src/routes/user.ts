@@ -22,6 +22,7 @@ userRouter.post("/signup", async (c) => {
       data: {
         email: body.email,
         password: body.password,
+        name: body.name
       },
     });
 
@@ -62,7 +63,7 @@ userRouter.post("/signin", async (c) => {
       return c.json({ error: "User not found" });
     }
 
-    const jwt = sign({ id: user.id }, c.env.JWT_SECRET);
+    const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
 
     return c.json({
       message: "Signin Successful!",
