@@ -15,15 +15,21 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
 
     async function sendRequest() {
         try {
-            const response = await axios.post(`${BACKEND_URL}/api/v1/user/${ type === "signup" ? "signup" : "signin"}`, postInputs);
-            const jwt = response.data;
-            localStorage.setItem("token", jwt);
-            navigate("/blogs");
-        } catch(e) {
-            // alert the user here that the request failed
-            alert("Error while signing up");
+            const response = await axios.post(`${BACKEND_URL}/api/v1/user/${type === "signup" ? "signup" : "signin"}`, postInputs);
+            const { token } = response.data;
+            if (token) {
+                localStorage.setItem("token", token);
+                navigate("/blogs");
+            } else {
+                console.error("Token not received");
+                alert("Token not received");
+            }
+        } catch (e) {
+            console.error("Error while signing up or signing in: ", e);
+            alert("Error while signing up or signing in. Please try again.");
         }
     }
+
 
     return <div className="h-screen flex justify-center">
         {/* {JSON.stringify(postInputs)} */}
